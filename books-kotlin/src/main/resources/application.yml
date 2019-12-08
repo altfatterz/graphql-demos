@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: book-details
+
+  #  jdbc:h2:mem:testdb
+  h2:
+    console:
+      enabled: true
+
+
+#logging.level:
+#  graphql.execution: debug
