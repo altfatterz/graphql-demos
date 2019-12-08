@@ -14,18 +14,20 @@ class GraphqlDataFetchers(private val bookRepository: BookRepository,
 
     val bookByIdDataFetcher: DataFetcher<Book?>
         get() = DataFetcher { env: DataFetchingEnvironment ->
-            val id = env.getArgument<Long>("id")
+            val id = env.getArgument<String>("id")
             logger.info("fetching book with id: {}", id)
-            bookRepository.findById(id)
+            bookRepository.findById(id.toLong())
         }
 
     fun addReview(): DataFetcher<Boolean> {
         return DataFetcher { env: DataFetchingEnvironment ->
-            val input = env.getArgument<HashMap<String, Any>>("input")
-            val book = bookRepository.findById(input["bookId"] as Long)
+            val input = env.getArgument<HashMap<String, String>>("input")
+
+            val book = bookRepository.findById(input["bookId"]!!.toLong())
             if (book == null) false
 
-            val review = Review(input["stars"] as Int, input["comment"] as String)
+            // ClassCastException when accessing input["stars"] since it is an Integer based on GraphQL schema
+            val review = Review(input["stars"]!!.toInt(), input["comment"]!!)
             reviewRepository.save(review)
 
             book!!.addReview(review)

@@ -21,6 +21,7 @@ dependencies {
     implementation("com.graphql-java:graphql-java:13.0")
     implementation("com.graphql-java:graphql-java-spring-boot-starter-webmvc:1.0")
 
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
