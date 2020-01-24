@@ -12,7 +12,14 @@ import kotlin.collections.HashSet
 // so you should use classes like 'data class User(val login: String, …​)'
 // when using Spring Data MongoDB, Spring Data JDBC, etc.
 
+
+// N+1 problem discussion
+// https://stackoverflow.com/questions/49192255/spring-data-findall-does-not-fetch-eagerly
+
 @Entity
+@NamedEntityGraph(name = "books", attributeNodes = [
+    NamedAttributeNode("author"),
+    NamedAttributeNode("reviews")])
 class Book(
         var title: String,
 

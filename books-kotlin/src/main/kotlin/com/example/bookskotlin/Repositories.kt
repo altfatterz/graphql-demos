@@ -1,11 +1,14 @@
 package com.example.bookskotlin
 
+import org.springframework.data.jpa.repository.EntityGraph
 import org.springframework.data.repository.Repository
 import java.util.*
 
 interface BookRepository : Repository<Book, UUID> {
     fun save(book: Book): Book
     fun findById(id: UUID): Book?
+
+    @EntityGraph(value = "books")
     fun findAll() : List<Book>
 }
 

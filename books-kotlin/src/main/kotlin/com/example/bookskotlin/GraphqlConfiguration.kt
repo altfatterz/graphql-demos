@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.Resource
 
 @Configuration
-class BooksConfiguration(private val graphqlDataFetchers: GraphqlDataFetchers,
-                         @Value("classpath:graphql/*.graphqls")
+class GraphqlConfiguration(private val graphqlDataFetchers: GraphqlDataFetchers,
+                           @Value("classpath:graphql/*.graphqls")
                          private val resources: Array<Resource> ) {
 
     @Bean
