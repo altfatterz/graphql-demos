@@ -175,6 +175,53 @@ Result:
 }
 ```
 
+#### Using `fragment`
+
+```graphql
+query DuplicateFields {	
+  book1:bookById(id:"694ec08c-f525-49f7-be6f-b674b408372a") {
+    title
+    pageCount
+    author {
+      firstName
+    }
+  }
+  book2:bookById(id:"17472734-1e56-4cc0-b4b3-1a894f71653b") {
+    title
+    pageCount
+    author {
+      firstName
+    }
+  }
+}
+```
+
+we could use the following
+
+```graphql
+query UseFragment {	
+  book1:bookById(id:"694ec08c-f525-49f7-be6f-b674b408372a") {
+    ...BookFragment
+  }
+  book2:bookById(id:"17472734-1e56-4cc0-b4b3-1a894f71653b") {
+    ...BookFragment
+  }
+}
+
+fragment BookFragment on Book {
+  title
+  pageCount
+  author {
+    firstName
+  }
+}
+```
+
+
+
+
+
+
 
 ### Mutation
 
@@ -210,3 +257,8 @@ Boost the performance of your Spring Data JPA application
 
 https://blog.ippon.tech/boost-the-performance-of-your-spring-data-jpa-application/
 
+Good suggestions: 
+https://github.com/spring-petclinic/spring-petclinic-graphql/issues/5
+
+GitHub GraphQL API:
+https://developer.github.com/v4/
