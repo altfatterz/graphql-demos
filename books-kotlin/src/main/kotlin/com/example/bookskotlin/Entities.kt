@@ -1,6 +1,5 @@
 package com.example.bookskotlin
 
-import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.Type
 import java.util.*
 import javax.persistence.*
@@ -20,7 +19,7 @@ class Book(
         @Column(name = "page_count")
         var pageCount: Int,
 
-        @ManyToOne
+        @ManyToOne(fetch = FetchType.LAZY)
         var author: Author,
 
         @OneToMany
