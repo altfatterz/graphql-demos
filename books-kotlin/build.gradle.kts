@@ -22,7 +22,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     implementation("com.graphql-java:graphql-java:13.0")
-q    implementation("com.graphql-java:graphql-java-extended-scalars:1.0")
+    implementation("com.graphql-java:graphql-java-extended-scalars:1.0")
     implementation("com.graphql-java:graphql-java-spring-boot-starter-webmvc:1.0")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
