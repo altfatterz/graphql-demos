@@ -16,11 +16,18 @@ class GraphqlDataFetchers(private val bookRepository: BookRepository,
         get() = DataFetcher { env: DataFetchingEnvironment ->
             val id = env.getArgument<String>("id")
             logger.info("fetching book with id: {}", id)
-            bookRepository.findById(id.toLong())
+            bookRepository.findById(UUID.fromString(id))
+        }
+
+    val books: DataFetcher<List<Book>>
+        get() = DataFetcher {
+            logger.info("fetching all books")
+            bookRepository.findAll()
         }
 
     fun addReview(): DataFetcher<Boolean> {
         return DataFetcher { env: DataFetchingEnvironment ->
+
             val input = env.getArgument<HashMap<String, Any>>("input")
             val bookId = input["bookId"]
             val stars = input["stars"]
@@ -28,13 +35,15 @@ class GraphqlDataFetchers(private val bookRepository: BookRepository,
 
             if (bookId is String && stars is Int && comment is String) {
 
-                val book = bookRepository.findById(bookId.toLong())
+                val book = bookRepository.findById(UUID.fromString(bookId))
                 if (book == null) false
 
                 val review = Review(stars.toInt(), comment)
+                logger.info("adding to book with id '$bookId' the review: $review")
+
                 reviewRepository.save(review)
 
-                book!!.addReview(review)
+                book!!.addReview(review)     // !! means that if book is null then NullPointerException will be thrown
                 bookRepository.save(book!!)
                 true
 

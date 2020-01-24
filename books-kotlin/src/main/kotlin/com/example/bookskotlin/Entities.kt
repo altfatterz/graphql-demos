@@ -1,6 +1,10 @@
 package com.example.bookskotlin
 
+import org.hibernate.annotations.ColumnDefault
+import org.hibernate.annotations.Type
+import java.util.*
 import javax.persistence.*
+import kotlin.collections.HashSet
 
 // Here we don’t use data classes with val properties because JPA is not designed to work with immutable classes
 // or the methods generated automatically by data classes.
@@ -23,7 +27,7 @@ class Book(
         @JoinColumn(name = "book_id")
         var reviews: MutableSet<Review> = HashSet(),
 
-        @Id @GeneratedValue var id: Long? = null
+        @Id @GeneratedValue(generator = "UUID") @Type(type = "uuid-char") var id: UUID? = null
 ) {
     fun addReview(review: Review) {
         reviews.add(review)
@@ -38,7 +42,7 @@ class Author(
         @Column(name = "last_name")
         var lastname: String,
 
-        @Id @GeneratedValue var id: Long? = null)
+        @Id @GeneratedValue(generator = "UUID") @Type(type = "uuid-char") var id: UUID? = null)
 
 @Entity
 class Review(
@@ -47,6 +51,6 @@ class Review(
 
         var comment: String,
 
-        @Id @GeneratedValue var id: Long? = null
+        @Id @GeneratedValue(generator = "UUID") @Type(type = "uuid-char") var id: UUID? = null
 )
 

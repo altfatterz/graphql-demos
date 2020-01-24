@@ -28,10 +28,11 @@ class BooksConfiguration(private val graphqlDataFetchers: GraphqlDataFetchers,
         return schemaGenerator.makeExecutableSchema(typeDefinitionRegistry, buildRuntimeWiring())
     }
 
-    private fun buildRuntimeWiring(): RuntimeWiring? {
+    private fun buildRuntimeWiring(): RuntimeWiring {
         return RuntimeWiring.newRuntimeWiring()
                 .type(TypeRuntimeWiring.newTypeWiring("Query")
-                        .dataFetcher("bookById", graphqlDataFetchers.bookByIdDataFetcher))
+                        .dataFetcher("bookById", graphqlDataFetchers.bookByIdDataFetcher)
+                        .dataFetcher("books", graphqlDataFetchers.books))
                 .type(TypeRuntimeWiring.newTypeWiring("Mutation")
                         .dataFetcher("addReview", graphqlDataFetchers.addReview()))
                 .build()
