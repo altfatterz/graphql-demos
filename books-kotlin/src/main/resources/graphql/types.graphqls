@@ -3,6 +3,7 @@ type Book {
     id: ID!
     title: String!
     pageCount: Int
+    publishedDate: Date
     author: Author!
     reviews: [Review]
 }
@@ -22,3 +23,5 @@ input AddReviewInput {
     stars: Int!
     comment: String!
 }
+
+scalar Date

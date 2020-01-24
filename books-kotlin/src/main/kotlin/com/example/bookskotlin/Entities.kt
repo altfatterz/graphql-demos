@@ -1,6 +1,7 @@
 package com.example.bookskotlin
 
 import org.hibernate.annotations.Type
+import java.time.LocalDate
 import java.util.*
 import javax.persistence.*
 import kotlin.collections.HashSet
@@ -25,6 +26,9 @@ class Book(
 
         @Column(name = "page_count")
         var pageCount: Int,
+
+        @Column(name = "published_date")
+        var publishedDate: LocalDate,
 
         @ManyToOne(fetch = FetchType.LAZY)
         var author: Author,

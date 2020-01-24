@@ -1,6 +1,7 @@
 package com.example.bookskotlin
 
 import graphql.GraphQL
+import graphql.scalars.ExtendedScalars
 import graphql.schema.GraphQLSchema
 import graphql.schema.idl.*
 import org.springframework.beans.factory.annotation.Value
@@ -30,6 +31,7 @@ class GraphqlConfiguration(private val graphqlDataFetchers: GraphqlDataFetchers,
 
     private fun buildRuntimeWiring(): RuntimeWiring {
         return RuntimeWiring.newRuntimeWiring()
+                .scalar(ExtendedScalars.Date)
                 .type(TypeRuntimeWiring.newTypeWiring("Query")
                         .dataFetcher("bookById", graphqlDataFetchers.bookByIdDataFetcher)
                         .dataFetcher("books", graphqlDataFetchers.books))
