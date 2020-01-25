@@ -23,9 +23,14 @@ public class BooksClientJavaApplication {
 	CommandLineRunner run(GraphQLTemplate graphQLTemplate) {
 		return args -> {
 
-			GraphQLResponse response = graphQLTemplate.perform("request.graphql", null);
+//			GraphQLResponse response = graphQLTemplate.perform("request.graphql", null,  null);
+//			GraphQLResponse response = graphQLTemplate.perform("two-operation.graphql",
+//					"BooksWithTitle", null);
+//			GraphQLResponse response = graphQLTemplate.perform("two-operation.graphql",
+//					"BooksWithTitleAndAuthor", null);
+			GraphQLResponse response = graphQLTemplate.perform("addReview.graphql", null, null);
 
-			System.out.println("Books:" + response.getResponseEntity().getBody());
+			System.out.println("Response:" + response.getResponseEntity().getBody());
 
 		};
 	}

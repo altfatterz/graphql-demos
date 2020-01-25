@@ -1,0 +1,14 @@
+query BooksWithTitle {
+    test1:books {
+        title
+    }
+}
+
+query BooksWithTitleAndAuthor {
+    test2:books {
+        title
+        author {
+            firstName
+        }
+    }
+}

@@ -1,0 +1,7 @@
+mutation {
+    addReview(input:{
+        bookId:"5a2642d2-3440-48f5-9c71-ebc4a8b9ef14"
+        stars:5
+        comment:"Good book"
+    })
+}

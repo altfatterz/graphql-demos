@@ -33,15 +33,16 @@ public class GraphQLTemplate {
         this.resourceLoader = resourceLoader;
     }
 
-    public GraphQLResponse perform(String graphqlResource, ObjectNode variables) throws IOException {
+    public GraphQLResponse perform(String graphqlResource, String operationName, ObjectNode variables) throws IOException {
         String graphql = loadQuery(graphqlResource);
-        String payload = createJsonQuery(graphql, variables);
+        String payload = createJsonQuery(graphql, operationName, variables);
         return post(payload);
     }
-    
-    private String createJsonQuery(String graphql, ObjectNode variables) throws JsonProcessingException {
+
+    private String createJsonQuery(String graphql, String operationName, ObjectNode variables) throws JsonProcessingException {
         ObjectNode wrapper = objectMapper.createObjectNode();
         wrapper.put("query", graphql);
+        wrapper.put("operationName", operationName);
         wrapper.set("variables", variables);
         return objectMapper.writeValueAsString(wrapper);
     }
