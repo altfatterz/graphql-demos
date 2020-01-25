@@ -18,6 +18,7 @@ import kotlin.collections.HashSet
 // https://stackoverflow.com/questions/49192255/spring-data-findall-does-not-fetch-eagerly
 
 @Entity
+@Table(name = "books")
 @NamedEntityGraph(name = "books", attributeNodes = [
     NamedAttributeNode("author"),
     NamedAttributeNode("reviews")])
@@ -45,16 +46,18 @@ class Book(
 }
 
 @Entity
+@Table(name = "authors")
 class Author(
         @Column(name = "first_name")
         var firstName: String,
 
         @Column(name = "last_name")
-        var lastname: String,
+        var lastName: String,
 
         @Id @GeneratedValue(generator = "UUID") @Type(type = "uuid-char") var id: UUID? = null)
 
 @Entity
+@Table(name = "reviews")
 class Review(
 
         var stars: Int,
