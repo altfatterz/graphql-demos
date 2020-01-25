@@ -1,7 +1,16 @@
-{
-  "input":{
-    "bookId": "b41c35c8-3b39-428d-a84b-97aebc7a1602",
-    "stars": 5,
-    "comment": "Its all about following your dream and about taking the risk of following your dreams"
+[
+  {
+    "input": {
+      "bookId": "b41c35c8-3b39-428d-a84b-97aebc7a1602",
+      "stars": 5,
+      "comment": "Its all about following your dream and about taking the risk of following your dreams"
+    }
+  },
+  {
+    "input": {
+      "bookId": "c5ec9fb6-b586-449f-b869-bfe4057a4f0e",
+      "stars": 5,
+      "comment": "It is like eating fancy dessert at a gourmet restaurant"
+    }
   }
-}
+]

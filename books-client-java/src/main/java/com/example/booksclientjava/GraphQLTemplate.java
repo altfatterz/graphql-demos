@@ -18,6 +18,8 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class GraphQLTemplate {
@@ -36,31 +38,49 @@ public class GraphQLTemplate {
 
     public GraphQLResponse perform(String graphQLRequest) throws IOException {
         String graphql = load(graphQLRequest);
-        String payload = createJsonQuery(graphql, null, null);
+        String payload = createJsonQuery(graphql, null);
         return post(payload);
     }
 
     public GraphQLResponse perform(String graphQLRequest, String operationName) throws IOException {
         String graphql = load(graphQLRequest);
-        String payload = createJsonQuery(graphql, operationName, null);
+        String payload = createJsonQuery(graphql, operationName);
         return post(payload);
     }
 
-    public GraphQLResponse perform(String graphQLRequest, String operationName, String variablesLocation) throws IOException {
+    public List<GraphQLResponse> performMany(String graphQLRequest, String operationName, String variablesLocation) throws IOException {
         String graphql = load(graphQLRequest);
         String variables = load(variablesLocation);
-        String payload = createJsonQuery(graphql, operationName, variables);
-        return post(payload);
+        List<String> jsonQueries = createJsonQueries(graphql, operationName, variables);
+        List<GraphQLResponse> responses = new ArrayList<>();
+        jsonQueries.forEach(jsonQuery -> {
+            GraphQLResponse response = post(jsonQuery);
+            responses.add(response);
+        });
+        return responses;
     }
 
-    private String createJsonQuery(String graphql, String operationName, String variables) throws JsonProcessingException {
+    private String createJsonQuery(String graphql, String operationName) throws JsonProcessingException {
         ObjectNode wrapper = objectMapper.createObjectNode();
         wrapper.put("query", graphql);
         wrapper.put("operationName", operationName);
-        if (variables != null) {
-            wrapper.set("variables", objectMapper.readTree(variables));
-        }
         return objectMapper.writeValueAsString(wrapper);
+    }
+
+    private List<String> createJsonQueries(String graphql, String operationName, String variables) throws JsonProcessingException {
+        ObjectNode wrapper = objectMapper.createObjectNode();
+        wrapper.put("query", graphql);
+        wrapper.put("operationName", operationName);
+
+        List<String> queries = new ArrayList<>();
+
+        JsonNode jsonNode = objectMapper.readTree(variables);
+        for (int i = 0; i < jsonNode.size(); i++) {
+            wrapper.set("variables", jsonNode.get(i));
+            queries.add(objectMapper.writeValueAsString(wrapper));
+        }
+
+        return queries;
     }
 
     private String load(String location) throws IOException {
