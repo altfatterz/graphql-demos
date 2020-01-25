@@ -1,7 +1,11 @@
 server:
   port: 8081
 
+spring:
+  main:
+    web-application-type: none
 
 graphql:
   endpoint:
     url: http://localhost:8080/graphql
+

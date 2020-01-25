@@ -23,15 +23,22 @@ public class BooksClientJavaApplication {
 	CommandLineRunner run(GraphQLTemplate graphQLTemplate) {
 		return args -> {
 
-//			GraphQLResponse response = graphQLTemplate.perform("request.graphql", null,  null);
-//			GraphQLResponse response = graphQLTemplate.perform("two-operation.graphql",
-//					"BooksWithTitle", null);
-//			GraphQLResponse response = graphQLTemplate.perform("two-operation.graphql",
-//					"BooksWithTitleAndAuthor", null);
-			GraphQLResponse response = graphQLTemplate.perform("addReview.graphql", null, null);
+			GraphQLResponse response1 = graphQLTemplate.perform("request.graphql");
+			System.out.println("data:" + response1.get("$.data"));
 
-			System.out.println("Response:" + response.getResponseEntity().getBody());
-			System.out.println("data:" + response.get("$.data"));
+			GraphQLResponse response2 = graphQLTemplate.perform("two-operation.graphql", "BooksWithTitle");
+			System.out.println("data:" + response2.get("$.data"));
+
+			GraphQLResponse response3 = graphQLTemplate.perform("two-operation.graphql", "BooksWithTitleAndAuthor");
+			System.out.println("data:" + response3.get("$.data"));
+
+			GraphQLResponse response4 = graphQLTemplate.perform("add-review.graphql");
+			System.out.println("data:" + response4.get("$.data"));
+
+			GraphQLResponse response5 = graphQLTemplate.perform(
+					"add-review-with-variables.graphql", "AddReview", "add-review-variables.json");
+			System.out.println("data:" + response5.get("$.data"));
+
 
 		};
 	}

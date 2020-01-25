@@ -1,6 +1,7 @@
 package com.example.booksclientjava;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,30 +25,45 @@ public class GraphQLTemplate {
     @Value("${graphql.endpoint.url}")
     private String graphqlEndpointUrl;
 
-    private RestTemplate restTemplate;
-    private ResourceLoader resourceLoader;
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final RestTemplate restTemplate;
+    private final ResourceLoader resourceLoader;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public GraphQLTemplate(RestTemplate restTemplate, ResourceLoader resourceLoader) {
         this.restTemplate = restTemplate;
         this.resourceLoader = resourceLoader;
     }
 
-    public GraphQLResponse perform(String graphqlResource, String operationName, ObjectNode variables) throws IOException {
-        String graphql = loadQuery(graphqlResource);
+    public GraphQLResponse perform(String graphQLRequest) throws IOException {
+        String graphql = load(graphQLRequest);
+        String payload = createJsonQuery(graphql, null, null);
+        return post(payload);
+    }
+
+    public GraphQLResponse perform(String graphQLRequest, String operationName) throws IOException {
+        String graphql = load(graphQLRequest);
+        String payload = createJsonQuery(graphql, operationName, null);
+        return post(payload);
+    }
+
+    public GraphQLResponse perform(String graphQLRequest, String operationName, String variablesLocation) throws IOException {
+        String graphql = load(graphQLRequest);
+        String variables = load(variablesLocation);
         String payload = createJsonQuery(graphql, operationName, variables);
         return post(payload);
     }
 
-    private String createJsonQuery(String graphql, String operationName, ObjectNode variables) throws JsonProcessingException {
+    private String createJsonQuery(String graphql, String operationName, String variables) throws JsonProcessingException {
         ObjectNode wrapper = objectMapper.createObjectNode();
         wrapper.put("query", graphql);
         wrapper.put("operationName", operationName);
-        wrapper.set("variables", variables);
+        if (variables != null) {
+            wrapper.set("variables", objectMapper.readTree(variables));
+        }
         return objectMapper.writeValueAsString(wrapper);
     }
 
-    private String loadQuery(String location) throws IOException {
+    private String load(String location) throws IOException {
         Resource resource = resourceLoader.getResource("classpath:" + location);
         return loadResource(resource);
     }
