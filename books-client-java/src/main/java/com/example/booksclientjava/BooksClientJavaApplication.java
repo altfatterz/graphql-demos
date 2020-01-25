@@ -31,6 +31,7 @@ public class BooksClientJavaApplication {
 			GraphQLResponse response = graphQLTemplate.perform("addReview.graphql", null, null);
 
 			System.out.println("Response:" + response.getResponseEntity().getBody());
+			System.out.println("data:" + response.get("$.data"));
 
 		};
 	}
