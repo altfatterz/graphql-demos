@@ -12,14 +12,14 @@ import org.springframework.core.io.Resource
 @Configuration
 class GraphqlConfiguration(private val graphqlDataFetchers: GraphqlDataFetchers,
                            @Value("classpath:graphql/*.graphqls")
-                         private val resources: Array<Resource> ) {
+                           private val resources: Array<Resource>) {
 
     @Bean
     fun graphQL(): GraphQL? {
         return GraphQL.newGraphQL(buildGraphQLSchema()).build()
     }
 
-    private fun buildGraphQLSchema(): GraphQLSchema? {
+    private fun buildGraphQLSchema(): GraphQLSchema {
         val schemaParser = SchemaParser()
         val typeDefinitionRegistry = TypeDefinitionRegistry()
         for (resource in resources) {
