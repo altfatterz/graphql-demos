@@ -1,4 +1,4 @@
-# all types in GraphQL are nullable by default, with ! we can declare that the field is non nullable.
+#represents a book
 type Book {
     id: ID!
     title: String!
@@ -8,16 +8,19 @@ type Book {
     reviews: [Review]
 }
 
+#represents an author
 type Author {
     firstName: String!
     lastName: String!
 }
 
+#represents a review
 type Review {
     stars: Int!
     comment: String!
 }
 
+#represent the input to add a review to a give book
 input AddReviewInput {
     bookId: ID!
     stars: Int!
